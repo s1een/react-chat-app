@@ -17,7 +17,7 @@ function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       setTimeout(() => {
         setLoading(false);
-        navigate("/");
+        navigate("/react-chat-app");
       }, 6000);
     } catch (err) {
       setLoading(false);
@@ -55,7 +55,8 @@ function LoginPage() {
           )}
         </form>
         <p>
-          You don't have an account? <Link to="/register">Register</Link>
+          You don't have an account?{" "}
+          <Link to="/react-chat-app/register">Register</Link>
         </p>
       </div>
     </div>

@@ -58,7 +58,7 @@ function RegisterPage() {
             await setDoc(doc(db, "userChats", res.user.uid), {});
             setTimeout(() => {
               setLoading(false);
-              navigate("/");
+              navigate("/react-chat-app");
             }, 6000);
           } catch (err) {
             setError(true);
@@ -108,7 +108,7 @@ function RegisterPage() {
           )}
         </form>
         <p>
-          You do have an account? <Link to="/login">Login</Link>
+          You do have an account? <Link to="/react-chat-app/login">Login</Link>
         </p>
       </div>
     </div>
