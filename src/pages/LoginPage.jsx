@@ -5,17 +5,26 @@ import { auth } from "../firebase";
 
 function LoginPage() {
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   async function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/login");
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/");
+      }, 6000);
     } catch (err) {
+      setLoading(false);
       setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 6000);
     }
   }
 
@@ -27,8 +36,23 @@ function LoginPage() {
         <form onSubmit={(e) => handleSubmit(e)}>
           <input type="email" placeholder="email" />
           <input type="password" placeholder="password" />
-          <button>Sign In</button>
-          {error && <span>Something went wrong...</span>}
+          <button disabled={loading || error}>Sign In</button>
+          {error && (
+            <div className="auth-error-container">
+              <h3>Oops,something went wrong...</h3>
+              <div className="auth-error-line-container">
+                <div className="auth-error-line"></div>
+              </div>
+            </div>
+          )}
+          {loading && (
+            <div className="loading-container">
+              <h3>Loading, please wait...</h3>
+              <div className="loading-line-container">
+                <div className="loading-line"></div>
+              </div>
+            </div>
+          )}
         </form>
         <p>
           You don't have an account? <Link to="/register">Register</Link>

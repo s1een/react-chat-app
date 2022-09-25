@@ -1,5 +1,7 @@
 import React from "react";
 import addAvatar from "../img/addAvatar.png";
+import noAvatar from "../img/noAvatar.png";
+
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db, storage } from "../firebase";
 import { useState } from "react";
@@ -9,14 +11,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   async function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
     const displayName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
-    const file = e.target[3].files[0];
-
+    let file = e.target[3].files[0];
     try {
       //Create user
       const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -24,15 +28,24 @@ function RegisterPage() {
       //Create a unique image name
       const date = new Date().getTime();
       const storageRef = ref(storage, `${displayName + date}`);
-
       await uploadBytesResumable(storageRef, file).then(() => {
         getDownloadURL(storageRef).then(async (downloadURL) => {
           try {
-            //Update profile
-            await updateProfile(res.user, {
-              displayName,
-              photoURL: downloadURL,
-            });
+            if (typeof file === "undefined") {
+              //Update profile
+              await updateProfile(res.user, {
+                displayName,
+                photoURL:
+                  "https://firebasestorage.googleapis.com/v0/b/chat-app-efec9.appspot.com/o/noAvatar.png?alt=media&token=a9a9c083-183a-4f3f-b85b-b02fb18a2861",
+              });
+            } else {
+              //Update profile
+              await updateProfile(res.user, {
+                displayName,
+                photoURL: downloadURL,
+              });
+            }
+
             //create user on firestore
             await setDoc(doc(db, "users", res.user.uid), {
               uid: res.user.uid,
@@ -43,17 +56,22 @@ function RegisterPage() {
 
             //create empty user chats on firestore
             await setDoc(doc(db, "userChats", res.user.uid), {});
-            navigate("/");
+            setTimeout(() => {
+              setLoading(false);
+              navigate("/");
+            }, 6000);
           } catch (err) {
-            console.log(err);
             setError(true);
-            // setLoading(false);
+            setLoading(false);
           }
         });
       });
     } catch (err) {
+      setLoading(false);
       setError(true);
-      // setLoading(false);
+      setTimeout(() => {
+        setError(false);
+      }, 6000);
     }
   }
 
@@ -71,8 +89,23 @@ function RegisterPage() {
             <img src={addAvatar} alt="add avatar img" />
             <span>Add an avatar</span>
           </label>
-          <button>Sign Up</button>
-          {error && <span>Something went wrong...</span>}
+          <button disabled={loading || error}>Sign Up</button>
+          {error && (
+            <div className="auth-error-container">
+              <h3>Oops,something went wrong...</h3>
+              <div className="auth-error-line-container">
+                <div className="auth-error-line"></div>
+              </div>
+            </div>
+          )}
+          {loading && (
+            <div className="loading-container">
+              <h3>Loading, please wait...</h3>
+              <div className="loading-line-container">
+                <div className="loading-line"></div>
+              </div>
+            </div>
+          )}
         </form>
         <p>
           You do have an account? <Link to="/login">Login</Link>

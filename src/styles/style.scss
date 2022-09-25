@@ -1,5 +1,6 @@
 $darkColor: #02141a;
 $purpleColor: #ba8fff;
+$transition: 0.8s;
 /* полоса прокрутки (скроллбар) */
 ::-webkit-scrollbar {
   width: 8px; /* ширина для вертикального скролла */
@@ -75,7 +76,7 @@ $purpleColor: #ba8fff;
   a {
     color: white;
     text-decoration: none;
-    transition: 0.8s;
+    transition: $transition;
     &:hover {
       color: #ba8fff;
       text-decoration: underline;
@@ -90,7 +91,6 @@ $purpleColor: #ba8fff;
     gap: 10px;
     align-items: center;
     color: $purpleColor;
-
     .logo {
       color: $purpleColor;
       font-weight: bold;
@@ -100,7 +100,6 @@ $purpleColor: #ba8fff;
     .title {
       font-size: 12px;
     }
-
     form {
       display: flex;
       flex-direction: column;
@@ -130,7 +129,7 @@ $purpleColor: #ba8fff;
         font-weight: bold;
         border: none;
         cursor: pointer;
-        transition: 0.8s;
+        transition: $transition;
         &:hover {
           background-color: #ba8fffbe;
         }
@@ -149,10 +148,106 @@ $purpleColor: #ba8fff;
         }
       }
     }
+
+    .loading-container {
+      position: relative;
+      bottom: 50%;
+      left: 50%;
+      margin-top: 10px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      h3 {
+        color: rgba(100, 100, 100, 0.9);
+      }
+    }
+    &.loading-line {
+      width: 100%;
+      height: 35px;
+      background: linear-gradient(
+        to bottom,
+        rgba(185, 173, 173, 0.17),
+        rgba(97, 91, 91, 0.1),
+        rgba(53, 51, 51, 0)
+      );
+      transform: skew(45deg) translate(15px, 5px);
+    }
+    & .loading-line-container {
+      width: 0%;
+      height: 5px;
+      background: rgb(133, 5, 119);
+      background: linear-gradient(
+        90deg,
+        rgba(133, 5, 119, 1) 0%,
+        rgba(118, 13, 203, 1) 100%
+      );
+      // background: linear-gradient(
+      //   to right,
+      //   rgb(51, 253, 93),
+      //   rgb(71, 185, 236),
+      //   rgb(42, 147, 245),
+      //   rgb(41, 168, 222),
+      //   rgb(120, 56, 179),
+      //   rgb(234, 34, 70)
+      // );
+
+      margin-top: 10px;
+      background-size: 353px 5px;
+      border-radius: 12px;
+      animation: loading 6s ease-in-out forwards;
+    }
+
+    @keyframes loading {
+      to {
+        width: 100%;
+      }
+    }
+
+    .auth-error-container {
+      position: relative;
+      bottom: 50%;
+      left: 50%;
+      margin-top: 10px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      h3 {
+        color: red;
+      }
+    }
+    &.auth-error-line {
+      width: 100%;
+      height: 35px;
+      background: linear-gradient(
+        to bottom,
+        rgba(185, 173, 173, 0.17),
+        rgba(97, 91, 91, 0.1),
+        rgba(53, 51, 51, 0)
+      );
+      transform: skew(45deg) translate(15px, 5px);
+    }
+    & .auth-error-line-container {
+      width: 0%;
+      height: 5px;
+      background: rgb(133, 5, 44);
+      background: linear-gradient(
+        90deg,
+        rgba(133, 5, 44, 1) 0%,
+        rgba(203, 13, 27, 1) 100%
+      );
+      margin-top: 10px;
+      background-size: 353px 5px;
+      border-radius: 12px;
+      animation: error 6s ease-in-out forwards;
+    }
+
+    @keyframes error {
+      to {
+        width: 100%;
+      }
+    }
+
     p {
       color: $purpleColor;
       font-size: 12px;
-      margin-top: 10px;
     }
   }
 }
@@ -165,7 +260,6 @@ $purpleColor: #ba8fff;
   align-items: center;
   justify-content: center;
   .container {
-    border: 1px solid white;
     border-radius: 10px;
     width: 65%;
     height: 80%;
@@ -177,12 +271,12 @@ $purpleColor: #ba8fff;
     .sidebar {
       flex: 1;
       background-color: $darkColor;
-      border-right: 1px solid $purpleColor;
+      // border-right: 1px solid #272822;
       position: relative;
       .navbar {
         display: flex;
         align-items: center;
-        background-color: $purpleColor;
+        // background-color: #404040;
         height: 50px;
         padding: 10px;
         justify-content: space-between;
@@ -190,6 +284,11 @@ $purpleColor: #ba8fff;
 
         .logo {
           font-weight: bold;
+          transition: $transition;
+          cursor: not-allowed;
+          &:hover {
+            color: $purpleColor;
+          }
           @include tablet {
             display: none;
           }
@@ -200,17 +299,31 @@ $purpleColor: #ba8fff;
           align-items: center;
           img {
             background-color: #ddddf7;
-            height: 30px;
-            width: 30px;
+            height: 35px;
+            width: 35px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid $purpleColor;
+            transition: $transition;
+            &:hover {
+              transform: scale(1.3);
+            }
           }
+
           button {
-            background-color: #5d5b8d;
-            color: #ddddf7;
-            font-size: 10px;
+            background-color: transparent;
+            color: $purpleColor;
+            padding: 5px;
+            font-size: 13px;
+            font-weight: bold;
             border: none;
             cursor: pointer;
+            transition: $transition;
+            // border: 1px solid $purpleColor;
+            &:hover {
+              background-color: $purpleColor;
+              color: white;
+            }
             @include tablet {
               position: absolute;
               bottom: 10px;
@@ -233,6 +346,10 @@ $purpleColor: #ba8fff;
             }
           }
         }
+        .search-error {
+          color: red;
+          padding: 10px;
+        }
       }
       .user-chat {
         padding: 10px;
@@ -244,6 +361,7 @@ $purpleColor: #ba8fff;
         &:hover {
           background-color: #5d5b8d;
         }
+
         img {
           width: 50px;
           height: 50px;
@@ -252,6 +370,11 @@ $purpleColor: #ba8fff;
         }
 
         .user-chat-info {
+          .chat-top {
+            width: 400px;
+            display: flex;
+            justify-content: space-between;
+          }
           span {
             font-size: 18px;
             font-weight: 500;
@@ -267,12 +390,29 @@ $purpleColor: #ba8fff;
       flex: 2;
       .chat-info {
         height: 50px;
-        background-color: $purpleColor;
+        // background-color: $purpleColor;
+        // border-bottom: 1px solid $purpleColor;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 10px;
         color: lightgray;
+        .user-info-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          img {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+          span {
+            font-weight: bold;
+            font-size: 18px;
+          }
+        }
       }
       .chat-icons {
         display: flex;
@@ -291,12 +431,13 @@ $purpleColor: #ba8fff;
           display: flex;
           gap: 20px;
           margin-bottom: 20px;
-
           .message-info {
             display: flex;
             flex-direction: column;
             color: gray;
             font-weight: 300;
+            align-items: center;
+
             img {
               width: 40px;
               height: 40px;
@@ -336,9 +477,16 @@ $purpleColor: #ba8fff;
           }
         }
       }
+      & .empty {
+        color: gray;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       .input {
         height: 50px;
-        background-color: #272822;
+        // background-color: #272822;
         border-top: 1px solid $purpleColor;
         color: #272822;
         padding: 10px;
@@ -349,8 +497,8 @@ $purpleColor: #ba8fff;
           width: 100%;
           border: none;
           outline: none;
-          background-color: #272822;
-          color: $purpleColor;
+          background-color: $darkColor;
+          color: white;
           font-size: 18px;
           &::placeholder {
             color: lightgray;
@@ -367,11 +515,17 @@ $purpleColor: #ba8fff;
           }
 
           button {
-            border: none;
             padding: 10px 15px;
-            color: white;
-            background-color: $purpleColor;
+            color: $purpleColor;
+            border: 1px solid $purpleColor;
+            background-color: transparent;
+            color: $purpleColor;
             cursor: pointer;
+            transition: $transition;
+            &:hover {
+              background-color: $purpleColor;
+              color: white;
+            }
           }
         }
       }
