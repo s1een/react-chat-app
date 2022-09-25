@@ -26,8 +26,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="react-chat-app/login" element={<LoginPage />} />
-          <Route path="react-chat-app/register" element={<RegisterPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
