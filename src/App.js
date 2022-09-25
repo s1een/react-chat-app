@@ -9,7 +9,7 @@ function App() {
   const { currentUser } = useContext(AuthContext);
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/react-chat-app/login" />;
     }
     return children;
   };
@@ -26,8 +26,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
+          <Route path="react-chat-app/login" element={<LoginPage />} />
+          <Route path="react-chat-app/register" element={<RegisterPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
